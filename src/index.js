@@ -3,12 +3,15 @@ import ReactDOM from "react-dom/client";
 import "./output.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import ContextWrapper from "./context/ContextWrapper";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-	<React.StrictMode>
-		<App />
-	</React.StrictMode>
+  <React.StrictMode>
+    <ContextWrapper>
+      <App />
+    </ContextWrapper>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
