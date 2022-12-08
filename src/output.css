@@ -130,9 +130,14 @@ strong {
   box-shadow: 2px 4px 20px lightgray;
 }
 
-#smallCalendar {
+#smallCalendarContainer {
   margin-top: 20px;
   margin-left: 30px;
+}
+
+#sCChild {
+  margin-top: 6px;
+  margin-right: 8px;
 }
 /*
 1. Use the user's configured `mono` font family by default.
