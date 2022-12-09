@@ -1,14 +1,14 @@
-import dayjs from "dayjs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { getMonth } from "../utils";
 import globalContext from "../context/GlobalContext";
-import { useContext } from "react";
+import dayjs from "dayjs";
 
 export default function SmallCalendar() {
   const [currentMonthIdx, setCurrentMonthIdx] = useState(dayjs().month());
   const [currentMonth, setCurrentMonth] = useState(getMonth());
 
-  const { monthIdx } = useContext(globalContext);
+  const { monthIdx, setSmallCalendarMonth, selectedDay, setSelectedDay } =
+    useContext(globalContext);
 
   useEffect(() => {
     setCurrentMonthIdx(monthIdx);
@@ -27,16 +27,18 @@ export default function SmallCalendar() {
   }
 
   function getCurrentDayClass(day) {
-    // const currentDay = dayjs().format("DD-MM-YY");
-    // const currDay = day.format("DD-MM-YY");
-    // if (currentDay === currDay) {
-    //   return "bg-blue-500 text-black rounded-full";
-    // } else {
-    //   return "";
-    // }
-    return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
-      ? "bg-blue-600 text-white rounded-full"
-      : "";
+    const format = "DD-MM-YY";
+    const currentDay = dayjs().format(format);
+    const currDay = day.format(format);
+    const chosenDay = selectedDay && selectedDay.format(format);
+
+    if (currDay === currentDay) {
+      return "bg-blue-600 text-white rounded-full";
+    } else if (currDay === chosenDay) {
+      return "bg-blue-100 rounded-full text-blue-600 font-bold";
+    } else {
+      return "";
+    }
   }
   return (
     <div id="smallCalendarContainer">
@@ -67,6 +69,10 @@ export default function SmallCalendar() {
               <button
                 key={j}
                 className={`py-1 w-full ${getCurrentDayClass(day)}`}
+                onClick={() => {
+                  setSmallCalendarMonth(currentMonthIdx);
+                  setSelectedDay(day);
+                }}
               >
                 <span className="text-sm">{day.format("D")}</span>
               </button>
