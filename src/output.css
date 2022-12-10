@@ -120,7 +120,6 @@ strong {
 
 #createEventButton {
   margin: 15px 0px 0px 10px;
-  border-width: 1px;
   min-width: 8rem;
   min-height: 3rem;
   justify-content: space-evenly;
