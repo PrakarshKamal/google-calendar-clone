@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import globalContext from "./GlobalContext";
 import dayjs from "dayjs";
 
-export default function ContextWrapper(props) {
+export default function ContextWrapper(props) { 
   const [monthIdx, setMonthIdx] = useState(dayjs().month());
   const [smallCalendarMonth, setSmallCalendarMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(dayjs());
