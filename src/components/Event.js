@@ -78,6 +78,14 @@ export default function Event() {
             </div>
           </div>
         </div>
+        <footer className="flex justify-end w-100 border-t p-3 mt-5">
+          <button
+            type="submit"
+            className="bg-blue-500 rounded text-white hover:bg-blue-600 px-6 py-2"
+          >
+            Save
+          </button>
+        </footer>
       </form>
     </div>
   );
