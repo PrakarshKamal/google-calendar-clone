@@ -1,14 +1,23 @@
 /** @type {import('tailwindcss').Config} */
 
-const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
+const labelsClasses = [
+  "indigo",
+  "gray",
+  "green",
+  "blue",
+  "red",
+  "purple",
+  "yellow",
+  "cyan",
+];
 
 module.exports = {
   purge: {
     content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
     safelist: [
-      ...labelsClasses.map((lbl) => `bg-${lbl}-500`),
-      ...labelsClasses.map((lbl) => `bg-${lbl}-200`),
-      ...labelsClasses.map((lbl) => `text-${lbl}-400`),
+      ...labelsClasses.map((label) => `bg-${label}-200`),
+      ...labelsClasses.map((label) => `bg-${label}-500`),
+      ...labelsClasses.map((label) => `text-${label}-400`),
     ],
   },
   darkMode: false, // or 'media' or 'class'
