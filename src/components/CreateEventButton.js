@@ -8,10 +8,9 @@ export default function CreateEventButton() {
   return (
     <button
       onClick={() => setShowEvent(true)}
-      id="createEventButton"
-      className="border rounded-full flex items-center shadow-md hover:shadow-2xl"
+      className="border p-2 rounded-full ml-[-10px] flex items-center shadow-md hover:shadow-2xl"
     >
-      <img src={plus} alt="create_event" className="w-7 h-7" />
+      <img src={plus} alt="create_event" className="w-11 h-8" />
       <span className="pl-3 pr-7"> Create</span>
     </button>
   );
