@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react'
+import React, { useState, useEffect, useReducer, useMemo } from 'react'
 import globalContext from './GlobalContext'
 import dayjs from 'dayjs'
 
@@ -27,6 +27,7 @@ export default function ContextWrapper(props) {
   const [selectedDay, setSelectedDay] = useState(dayjs())
   const [showEvent, setShowEvent] = useState(false)
   const [showSelectedEvent, setShowSelectedEvent] = useState(null)
+  const [labels, setLabels] = useState([])
 
   const [savedEvents, dispatchEvents] = useReducer(
     savedEventsReducer,
@@ -41,8 +42,35 @@ export default function ContextWrapper(props) {
   }, [smallCalendarMonth])
 
   useEffect(() => {
+    setLabels((prev) => {
+      return [...new Set(savedEvents.map((event) => event.label))].map(
+        (label) => {
+          const curr = prev.find((l) => l.label === label)
+          return {
+            label,
+            checkLabel: curr ? curr : true,
+          }
+        }
+      )
+    })
+  }, [savedEvents])
+
+  useEffect(() => {
     localStorage.setItem('savedEvents', JSON.stringify(savedEvents))
   }, [savedEvents])
+
+  function updateLabel(label) {
+    setLabels(labels.map((lbl) => (lbl.label === label.label ? label : lbl)))
+  }
+
+  const filterEvents = useMemo(() => {
+    return savedEvents.filter((e) =>
+      labels
+        .filter((l) => l.checkLabel)
+        .map((l) => l.label)
+        .includes(e.label)
+    )
+  }, [savedEvents, labels])
 
   return (
     <globalContext.Provider
@@ -59,6 +87,10 @@ export default function ContextWrapper(props) {
         dispatchEvents,
         showSelectedEvent,
         setShowSelectedEvent,
+        labels,
+        setLabels,
+        updateLabel,
+        filterEvents,
       }}
     >
       {props.children}

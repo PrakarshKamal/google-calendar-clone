@@ -11,7 +11,7 @@ const labelsClasses = [
   'indigo',
   'purple',
   'pink',
-  'zinc',
+  'gray',
 ]
 
 export default function Event() {

@@ -13,15 +13,15 @@ export default function Day({ day, rowIdx }) {
 
   const [event, setEvent] = useState([])
 
-  const { setSelectedDay, setShowEvent, savedEvents, setShowSelectedEvent } =
+  const { setSelectedDay, setShowEvent, filterEvents, setShowSelectedEvent } =
     useContext(globalContext)
 
   useEffect(() => {
-    const events = savedEvents.filter(
+    const events = filterEvents.filter(
       (e) => dayjs(e.day).format(format) === day.format(format)
     )
     setEvent(events)
-  }, [day, savedEvents])
+  }, [day, filterEvents])
 
   return (
     <div className="border border-gray-200 flex flex-col">
