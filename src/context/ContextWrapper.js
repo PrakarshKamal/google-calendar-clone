@@ -42,6 +42,12 @@ export default function ContextWrapper(props) {
   }, [smallCalendarMonth])
 
   useEffect(() => {
+    if (!showEvent) {
+      setShowSelectedEvent(null)
+    }
+  }, [showEvent])
+
+  useEffect(() => {
     setLabels((prev) => {
       return [...new Set(savedEvents.map((event) => event.label))].map(
         (label) => {
