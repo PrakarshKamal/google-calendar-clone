@@ -54,6 +54,7 @@ export default function ContextWrapper(props) {
         setSelectedDay,
         showEvent,
         setShowEvent,
+        savedEvents,
         dispatchEvents,
       }}
     >

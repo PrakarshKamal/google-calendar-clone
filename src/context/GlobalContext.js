@@ -13,6 +13,7 @@ const globalContext = React.createContext({
   showEvent: false,
   setShowEvent: () => {},
 
+  savedEvents: [],
   dispatchEvents: ({ type, payload }) => {},
 })
 
