@@ -46,7 +46,7 @@ export default function Day({ day, rowIdx }) {
         {event.map((e, idx) => (
           <div
             key={idx}
-            className={`bg-${e.label}-200 p-1 mr-3 w-full text-gray-600 text-sm rounded mb-1 truncate`}
+            className={`bg-${e.label}-200 p-1 mr-3 w-11/12 text-gray-600 text-sm rounded mb-1 truncate`}
             onClick={() => setShowSelectedEvent(e)}
           >
             {e.title}
