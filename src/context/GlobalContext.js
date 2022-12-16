@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 const globalContext = React.createContext({
   monthIdx: 0,
@@ -12,6 +12,8 @@ const globalContext = React.createContext({
 
   showEvent: false,
   setShowEvent: () => {},
-});
 
-export default globalContext;
+  dispatchEvents: ({ type, payload }) => {},
+})
+
+export default globalContext

@@ -1,23 +1,39 @@
-import React, { useContext, useState } from "react";
-import globalContext from "../context/GlobalContext";
+import React, { useContext, useState } from 'react'
+import globalContext from '../context/GlobalContext'
 
 const labelsClasses = [
-  "indigo",
-  "gray",
-  "green",
-  "blue",
-  "red",
-  "purple",
-  "yellow",
-  "cyan",
-];
+  'indigo',
+  'gray',
+  'green',
+  'blue',
+  'red',
+  'purple',
+  'yellow',
+  'cyan',
+]
 
 export default function Event() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [selectedLabel, setSelectedLabel] = useState(labelsClasses[0]);
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [selectedLabel, setSelectedLabel] = useState(labelsClasses[0])
 
-  const { setShowEvent, selectedDay } = useContext(globalContext);
+  const { setShowEvent, selectedDay, dispatchEvents } =
+    useContext(globalContext)
+
+  function handleSave(event) {
+    event.preventDefault()
+
+    const calendarEvent = {
+      title,
+      description,
+      label: selectedLabel,
+      day: selectedDay.valueOf(),
+      id: Date.now(),
+    }
+
+    dispatchEvents({ type: 'push', payload: calendarEvent })
+    setShowEvent(false)
+  }
 
   return (
     <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center">
@@ -45,7 +61,7 @@ export default function Event() {
             <span className="material-icons-outlined text-gray-400">
               schedule
             </span>
-            <p className="ml-2">{selectedDay.format("dddd, MMMM, DD")}</p>
+            <p className="ml-2">{selectedDay.format('dddd, MMMM, DD')}</p>
             <span className="material-icons-outlined text-gray-400">
               segment
             </span>
@@ -82,11 +98,12 @@ export default function Event() {
           <button
             type="submit"
             className="bg-blue-500 rounded text-white hover:bg-blue-600 px-6 py-2"
+            onClick={handleSave}
           >
             Save
           </button>
         </footer>
       </form>
     </div>
-  );
+  )
 }
