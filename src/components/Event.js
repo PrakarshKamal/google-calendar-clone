@@ -2,23 +2,33 @@ import React, { useContext, useState } from 'react'
 import globalContext from '../context/GlobalContext'
 
 const labelsClasses = [
-  'indigo',
-  'gray',
-  'green',
-  'blue',
+  'orange',
   'red',
-  'purple',
   'yellow',
+  'green',
   'cyan',
+  'blue',
+  'indigo',
+  'purple',
+  'pink',
+  'zinc',
 ]
 
 export default function Event() {
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [selectedLabel, setSelectedLabel] = useState(labelsClasses[0])
-
-  const { setShowEvent, selectedDay, dispatchEvents } =
+  const { setShowEvent, selectedDay, dispatchEvents, showSelectedEvent } =
     useContext(globalContext)
+
+  const [title, setTitle] = useState(
+    showSelectedEvent ? showSelectedEvent.title : ''
+  )
+  const [description, setDescription] = useState(
+    showSelectedEvent ? showSelectedEvent.description : ''
+  )
+  const [selectedLabel, setSelectedLabel] = useState(
+    showSelectedEvent
+      ? labelsClasses.find((label) => label === showSelectedEvent.label)
+      : labelsClasses[0]
+  )
 
   function handleSave(event) {
     event.preventDefault()
@@ -28,23 +38,43 @@ export default function Event() {
       description,
       label: selectedLabel,
       day: selectedDay.valueOf(),
-      id: Date.now(),
+      id: showSelectedEvent ? showSelectedEvent.id : Date.now(),
     }
 
-    dispatchEvents({ type: 'push', payload: calendarEvent })
+    if (showSelectedEvent) {
+      dispatchEvents({ type: 'update', payload: calendarEvent })
+    } else {
+      dispatchEvents({ type: 'push', payload: calendarEvent })
+    }
+
     setShowEvent(false)
   }
 
   return (
     <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center">
-      <form className="bg-white rounded-lg shadow-2xl w-1/4">
+      <form className="bg-white rounded-lg shadow-2xl w-1/3">
         <header className="bg-gray-100 px-4 py-2 flex justify-between items-center">
           <span className="material-icons-outlined text-gray-400">
             drag_handle
           </span>
-          <button onClick={() => setShowEvent(false)}>
-            <span className="material-icons-outlined text-gray-400">close</span>
-          </button>
+          <div>
+            {showSelectedEvent && (
+              <span
+                className="material-icons px-1 text-gray-400 cursor-pointer"
+                onClick={() => {
+                  dispatchEvents({ type: 'delete', payload: showSelectedEvent })
+                  setShowEvent(false)
+                }}
+              >
+                delete
+              </span>
+            )}
+            <button onClick={() => setShowEvent(false)}>
+              <span className="material-icons-outlined text-gray-400">
+                close
+              </span>
+            </button>
+          </div>
         </header>
         <div className="p-3">
           <div className="grid grid-cols-1/5 items-end gap-y-7">
@@ -66,7 +96,7 @@ export default function Event() {
               segment
             </span>
             <input
-              className="pt-3 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
+              className="pt-3 ml-[-2px] border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
               type="text"
               name="description"
               placeholder="Add a description"
@@ -77,7 +107,7 @@ export default function Event() {
             <span className="material-icons-outlined text-gray-400">
               bookmark_border
             </span>
-            <div className="flex gap-x-2">
+            <div className="flex gap-x-2 ml-2">
               {labelsClasses.map((label, idx) => (
                 <span
                   key={idx}

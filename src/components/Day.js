@@ -13,7 +13,7 @@ export default function Day({ day, rowIdx }) {
 
   const [event, setEvent] = useState([])
 
-  const { setSelectedDay, setShowEvent, savedEvents } =
+  const { setSelectedDay, setShowEvent, savedEvents, setShowSelectedEvent } =
     useContext(globalContext)
 
   useEffect(() => {
@@ -47,6 +47,7 @@ export default function Day({ day, rowIdx }) {
           <div
             key={idx}
             className={`bg-${e.label}-200 p-1 mr-3 w-full text-gray-600 text-sm rounded mb-1 truncate`}
+            onClick={() => setShowSelectedEvent(e)}
           >
             {e.title}
           </div>

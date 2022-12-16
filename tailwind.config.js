@@ -1,19 +1,21 @@
 /** @type {import('tailwindcss').Config} */
 
 const labelsClasses = [
-  "indigo",
-  "gray",
-  "green",
-  "blue",
-  "red",
-  "purple",
-  "yellow",
-  "cyan",
-];
+  'orange',
+  'red',
+  'yellow',
+  'green',
+  'cyan',
+  'blue',
+  'indigo',
+  'purple',
+  'pink',
+  'zinc',
+]
 
 module.exports = {
   purge: {
-    content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+    content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
     safelist: [
       ...labelsClasses.map((label) => `bg-${label}-200`),
       ...labelsClasses.map((label) => `bg-${label}-500`),
@@ -24,15 +26,15 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Open Sans"],
+        sans: ['Open Sans'],
       },
       gridTemplateColumns: {
-        "1/5": "1fr 5fr",
+        '1/5': '1fr 5fr',
       },
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [require("@tailwindcss/forms")],
-};
+  plugins: [require('@tailwindcss/forms')],
+}

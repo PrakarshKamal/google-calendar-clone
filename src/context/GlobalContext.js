@@ -15,6 +15,9 @@ const globalContext = React.createContext({
 
   savedEvents: [],
   dispatchEvents: ({ type, payload }) => {},
+
+  showSelectedEvent: null,
+  setShowSelectedEvent: () => {},
 })
 
 export default globalContext
