@@ -21,9 +21,26 @@ function initialEvent() {
   return parsedEvents
 }
 
+export interface CreateEvent {
+  label: string
+  title: string
+  description: string
+  id: number
+  day: number
+}
+
+interface ContextWrapperTypes {
+  monthIdx: number
+  smallCalendarMonth: number
+  selectedDay: dayjs.Dayjs
+  showEvent: boolean
+  showSelectedEvent: Event
+  labels: string[]
+}
+
 export default function ContextWrapper(props) {
   const [monthIdx, setMonthIdx] = useState(dayjs().month())
-  const [smallCalendarMonth, setSmallCalendarMonth] = useState(null)
+  const [smallCalendarMonth, setSmallCalendarMonth] = useState(0)
   const [selectedDay, setSelectedDay] = useState(dayjs())
   const [showEvent, setShowEvent] = useState(false)
   const [showSelectedEvent, setShowSelectedEvent] = useState(null)
