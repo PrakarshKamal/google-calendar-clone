@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react'
-import globalContext from './GlobalContext'
+import globalContext, { CalendarEvent } from './GlobalContext'
 import dayjs from 'dayjs'
 
 function savedEventsReducer(state, { type, payload }) {
@@ -34,16 +34,21 @@ interface ContextWrapperTypes {
   smallCalendarMonth: number
   selectedDay: dayjs.Dayjs
   showEvent: boolean
-  showSelectedEvent: Event
+  selectedCalendarEvent: Event
   labels: string[]
 }
 
-export default function ContextWrapper(props) {
+interface LabelType {
+  label: string
+  checkLabel: boolean
+}
+
+export default function ContextWrapper(props: ContextWrapperTypes) {
   const [monthIdx, setMonthIdx] = useState(dayjs().month())
   const [smallCalendarMonth, setSmallCalendarMonth] = useState(0)
   const [selectedDay, setSelectedDay] = useState(dayjs())
   const [showEvent, setShowEvent] = useState(false)
-  const [showSelectedEvent, setShowSelectedEvent] = useState(null)
+  const [selectedCalendarEvent, setSelectedCalendarEvent] = useState(null)
   const [labels, setLabels] = useState([])
 
   const [savedEvents, dispatchEvents] = useReducer(
@@ -60,21 +65,21 @@ export default function ContextWrapper(props) {
 
   useEffect(() => {
     if (!showEvent) {
-      setShowSelectedEvent(null)
+      setSelectedCalendarEvent(null)
     }
   }, [showEvent])
 
   useEffect(() => {
-    setLabels((prev) => {
-      return [...new Set(savedEvents.map((event) => event.label))].map(
-        (label) => {
-          const curr = prev.find((l) => l.label === label)
-          return {
-            label,
-            checkLabel: curr ? curr : true,
-          }
+    setLabels((prev: LabelType[]) => {
+      return [
+        ...new Set(savedEvents.map((event: CalendarEvent) => event.label)),
+      ].map((label) => {
+        const curr = prev.find((l) => l.label === label)
+        return {
+          label,
+          checkLabel: curr ? curr : true,
         }
-      )
+      })
     })
   }, [savedEvents])
 
@@ -108,8 +113,8 @@ export default function ContextWrapper(props) {
         setShowEvent,
         savedEvents,
         dispatchEvents,
-        showSelectedEvent,
-        setShowSelectedEvent,
+        selectedCalendarEvent,
+        setSelectedCalendarEvent,
         labels,
         setLabels,
         updateLabel,

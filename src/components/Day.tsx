@@ -1,10 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import globalContext from '../context/GlobalContext'
+import { CreateEvent } from '../context/ContextWrapper'
 
 const format = 'DD-MM-YY'
 
-export default function Day({ day, rowIdx }) {
+type Props = {
+  day: dayjs.Dayjs
+  rowIdx: number
+}
+
+export default function Day({ day, rowIdx }: Props) {
   function getCurrentDayClass() {
     return day.format(format) === dayjs().format(format)
       ? 'bg-blue-600 text-white rounded-full w-7'
@@ -13,12 +19,16 @@ export default function Day({ day, rowIdx }) {
 
   const [event, setEvent] = useState([])
 
-  const { setSelectedDay, setShowEvent, filterEvents, setShowSelectedEvent } =
-    useContext(globalContext)
+  const {
+    setSelectedDay,
+    setShowEvent,
+    filterEvents,
+    setSelectedCalendarEvent,
+  } = useContext(globalContext)
 
   useEffect(() => {
     const events = filterEvents.filter(
-      (e) => dayjs(e.day).format(format) === day.format(format)
+      (e: CreateEvent) => dayjs(e.day).format(format) === day.format(format)
     )
     setEvent(events)
   }, [day, filterEvents])
@@ -43,11 +53,11 @@ export default function Day({ day, rowIdx }) {
           setShowEvent(true)
         }}
       >
-        {event.map((e, idx) => (
+        {event.map((e: CreateEvent, idx: number) => (
           <div
             key={idx}
             className={`bg-${e.label}-200 p-1 mr-3 w-11/12 text-gray-600 text-sm rounded mb-1 truncate`}
-            onClick={() => setShowSelectedEvent(e)}
+            onClick={() => setSelectedCalendarEvent(e)}
           >
             {e.title}
           </div>

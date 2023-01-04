@@ -15,22 +15,22 @@ const labelsClasses = [
 ]
 
 export default function Event() {
-  const { setShowEvent, selectedDay, dispatchEvents, showSelectedEvent } =
+  const { setShowEvent, selectedDay, dispatchEvents, selectedCalendarEvent } =
     useContext(globalContext)
 
   const [title, setTitle] = useState(
-    showSelectedEvent ? showSelectedEvent.title : ''
+    selectedCalendarEvent ? selectedCalendarEvent.title : ''
   )
   const [description, setDescription] = useState(
-    showSelectedEvent ? showSelectedEvent.description : ''
+    selectedCalendarEvent ? selectedCalendarEvent.description : ''
   )
   const [selectedLabel, setSelectedLabel] = useState(
-    showSelectedEvent
-      ? labelsClasses.find((label) => label === showSelectedEvent.label)
+    selectedCalendarEvent
+      ? labelsClasses.find((label) => label === selectedCalendarEvent.label)
       : labelsClasses[0]
   )
 
-  function handleSave(event) {
+  function handleSave(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     event.preventDefault()
 
     const calendarEvent = {
@@ -38,10 +38,10 @@ export default function Event() {
       description,
       label: selectedLabel,
       day: selectedDay.valueOf(),
-      id: showSelectedEvent ? showSelectedEvent.id : Date.now(),
+      id: selectedCalendarEvent ? selectedCalendarEvent.id : Date.now(),
     }
 
-    if (showSelectedEvent) {
+    if (selectedCalendarEvent) {
       dispatchEvents({ type: 'update', payload: calendarEvent })
     } else {
       dispatchEvents({ type: 'push', payload: calendarEvent })
@@ -58,11 +58,14 @@ export default function Event() {
             drag_handle
           </span>
           <div>
-            {showSelectedEvent && (
+            {selectedCalendarEvent && (
               <span
                 className="material-icons px-1 text-gray-400 cursor-pointer"
                 onClick={() => {
-                  dispatchEvents({ type: 'delete', payload: showSelectedEvent })
+                  dispatchEvents({
+                    type: 'delete',
+                    payload: selectedCalendarEvent,
+                  })
                   setShowEvent(false)
                 }}
               >
