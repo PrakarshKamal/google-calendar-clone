@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react'
-import globalContext, { CalendarEvent } from './GlobalContext'
+import globalContext, { CalendarEvent, DispatchPayload } from './GlobalContext'
 import dayjs from 'dayjs'
 
-function savedEventsReducer(state, { type, payload }) {
+function savedEventsReducer(state, { type, payload }: DispatchPayload) {
   switch (type) {
     case 'push':
       return [...state, payload]
     case 'update':
-      return state.map((event) => (event.id === payload.id ? payload : event))
+      return state.map((event: CalendarEvent) =>
+        event.id === payload.id ? payload : event
+      )
     case 'delete':
-      return state.filter((event) => event.id !== payload.id)
+      return state.filter((event: CalendarEvent) => event.id !== payload.id)
     default:
       throw new Error()
   }

@@ -13,7 +13,7 @@ export type CalendarEvent = {
   id: number
 }
 
-type DispatchPayload = {
+export type DispatchPayload = {
   type: DispatchTypes
   payload: CalendarEvent
 }
