@@ -133,8 +133,8 @@ export default function ContextWrapper(props: ContextWrapperTypes) {
         dispatchEvents,
         selectedCalendarEvent,
         setSelectedCalendarEvent,
-        labels,
-        setLabels,
+        labelsInState,
+        setLabelsInState,
         updateLabel,
         filterEvents,
       }}
