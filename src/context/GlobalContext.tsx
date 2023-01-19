@@ -1,19 +1,19 @@
 import dayjs from 'dayjs'
 import React from 'react'
 // import Event from '../components/Event'
-import { CreateEvent } from './ContextWrapper'
+import { CreateEvent, LabelType } from './ContextWrapper'
 
 type DispatchTypes = 'update' | 'push' | 'delete'
 
-export type CalendarEvent = {
+export interface CalendarEvent {
   title: string
   description: string
-  label: string | undefined
+  label: string
   day?: number
   id: number
 }
 
-export type DispatchPayload = {
+export interface DispatchPayload {
   type: DispatchTypes
   payload: CalendarEvent
 }
@@ -47,7 +47,7 @@ const globalContext = React.createContext({
 
   labels: [],
   setLabels: (isLabel: boolean) => isLabel,
-  updateLabel: (label: string) => label,
+  updateLabel: (label: LabelType) => label,
 
   filterEvents: [],
 })

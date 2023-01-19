@@ -36,7 +36,7 @@ export default function Event() {
     const calendarEvent = {
       title,
       description,
-      label: selectedLabel,
+      label: selectedLabel || '',
       day: selectedDay.valueOf(),
       id: selectedCalendarEvent ? selectedCalendarEvent.id : Date.now(),
     }

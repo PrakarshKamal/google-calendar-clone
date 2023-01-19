@@ -1,8 +1,17 @@
-import React, { useState, useEffect, useReducer, useMemo } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useMemo,
+  ReactNode,
+} from 'react'
 import globalContext, { CalendarEvent, DispatchPayload } from './GlobalContext'
 import dayjs from 'dayjs'
 
-function savedEventsReducer(state, { type, payload }: DispatchPayload) {
+function savedEventsReducer(
+  state: CalendarEvent[],
+  { type, payload }: DispatchPayload
+) {
   switch (type) {
     case 'push':
       return [...state, payload]
@@ -38,9 +47,10 @@ interface ContextWrapperTypes {
   showEvent: boolean
   selectedCalendarEvent: Event
   labels: string[]
+  children: ReactNode
 }
 
-interface LabelType {
+export interface LabelType {
   label: string
   checkLabel: boolean
 }
@@ -51,7 +61,7 @@ export default function ContextWrapper(props: ContextWrapperTypes) {
   const [selectedDay, setSelectedDay] = useState(dayjs())
   const [showEvent, setShowEvent] = useState(false)
   const [selectedCalendarEvent, setSelectedCalendarEvent] = useState(null)
-  const [labels, setLabels] = useState([])
+  const [labelsInState, setLabelsInState] = useState<LabelType[]>([])
 
   const [savedEvents, dispatchEvents] = useReducer(
     savedEventsReducer,
@@ -72,10 +82,12 @@ export default function ContextWrapper(props: ContextWrapperTypes) {
   }, [showEvent])
 
   useEffect(() => {
-    setLabels((prev: LabelType[]) => {
+    //@ts-ignore
+    setLabels((prev) => {
       return [
         ...new Set(savedEvents.map((event: CalendarEvent) => event.label)),
       ].map((label) => {
+        //@ts-ignore
         const curr = prev.find((l) => l.label === label)
         return {
           label,
@@ -89,18 +101,22 @@ export default function ContextWrapper(props: ContextWrapperTypes) {
     localStorage.setItem('savedEvents', JSON.stringify(savedEvents))
   }, [savedEvents])
 
-  function updateLabel(label) {
-    setLabels(labels.map((lbl) => (lbl.label === label.label ? label : lbl)))
+  function updateLabel(newLabel: LabelType) {
+    setLabelsInState(
+      labelsInState.map((lbl) =>
+        lbl.label === newLabel.label ? newLabel : lbl
+      )
+    )
   }
 
   const filterEvents = useMemo(() => {
-    return savedEvents.filter((e) =>
-      labels
+    return savedEvents.filter((e: CalendarEvent) =>
+      labelsInState
         .filter((l) => l.checkLabel)
         .map((l) => l.label)
         .includes(e.label)
     )
-  }, [savedEvents, labels])
+  }, [savedEvents, labelsInState])
 
   return (
     <globalContext.Provider
